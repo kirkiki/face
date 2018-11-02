@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import FaceRecognitionApiService from '../Services/FaceRecognitionApi.service'
+import Preview from './Preview'
 
 class UploadForm extends Component {
 
@@ -12,7 +13,13 @@ class UploadForm extends Component {
         this.faceRecog = new FaceRecognitionApiService("59367a363a2947208054fa85fc318ce9")
 
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            imageData : {
+                width : 0,
+                height : 0,
+                url : ""
+            },
+            faceRect : {}
         };
 
     }
@@ -23,12 +30,25 @@ class UploadForm extends Component {
         });
     }
 
+    updatePreview(image) {
+        image.onload = () => { 
+            this.setState({
+                imageData : { 
+                    width : image.width,
+                    height : image.height,
+                    url : image.src
+                }
+            })
+        }
+    }
+
     uploadUrlImage() {
         // TODO add url checks.
-        // https://media1.popsugar-assets.com/files/thumbor/Z2Pu7yrdRY56ug4-KYlLLoNK_3Y/fit-in/728xorig/filters:format_auto-!!-:strip_icc-!!-/2011/10/43/3/192/1922153/88ead859efe1888f_BTV_HowTo_DragonTat_2011_1023_thumbsquare/i/Halloween-Costume-Lisbeth-Salander-Girl-Dragon-Tattoo.png
-        //
-        //
-        this.faceRecog.GetFaceInformationFromUrl(this.input.value)
+        // 
+        let image = new Image()
+        image.src = this.state.inputValue
+        this.updatePreview(image)
+        this.faceRecog.GetFaceInformationFromUrl(this.state.inputValue)
         .then(function (response) {
             console.log(response);
         })
@@ -43,16 +63,30 @@ class UploadForm extends Component {
         if (fileReader && fileList && fileList.length) {
             fileReader.readAsArrayBuffer(fileList[0]);
             fileReader.onload = () => {
-                let imageData = fileReader.result;
                 // TODO update preview
+                let imageData = fileReader.result
                 this.faceRecog.GetFaceInformationFromImageData(imageData)
                 .then(function (response) {
                     console.log(response);
+                    this.setState({
+                        faceRect : response.data.faceRectangle
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             };
+
+            let imgUrlReader = new FileReader();
+            
+            imgUrlReader.onload = (file) =>
+            {
+                let image = new Image()
+                image.src = file.target.result
+                this.updatePreview(image)
+            }
+
+            imgUrlReader.readAsDataURL(fileList[0]);
         }
     }
 
@@ -77,9 +111,7 @@ class UploadForm extends Component {
                         </div>
                     </div>
                 </div>
-                <div id="preview_container">
-                    <div id="preview"></div>
-                </div>
+                <Preview faceRect={this.state.faceRect} image={this.state.imageData} imageUrl={this.state.previewUrl}></Preview>
             </div>
         )
     }

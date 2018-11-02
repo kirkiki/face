@@ -5,13 +5,13 @@
 #container{
     display:inline-block;
     margin: 0 auto; 
-    background: black; 
+    background: white; 
     position:relative; 
-    border:5px solid black; 
+    border:5px solid white; 
     border-radius: 10px; 
     box-shadow: 0 5px 50px #333}
 
-#previewCanvas{
+#faceCanvas{
     position:relative;
     z-index:20;
 }

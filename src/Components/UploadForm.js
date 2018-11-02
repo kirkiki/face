@@ -19,7 +19,8 @@ class UploadForm extends Component {
                 height : 0,
                 url : ""
             },
-            faceRect : {}
+            faceRect : {},
+            faceLandmarks : {}
         };
 
     }
@@ -42,6 +43,13 @@ class UploadForm extends Component {
         }
     }
 
+    handleResponse(response) {
+        this.setState({
+            faceRect : response.data[0].faceRectangle,
+            faceLandmarks : response.data[0].faceLandmarks,
+        })
+    }
+
     uploadUrlImage() {
         // TODO add url checks.
         // 
@@ -49,9 +57,7 @@ class UploadForm extends Component {
         image.src = this.state.inputValue
         this.updatePreview(image)
         this.faceRecog.GetFaceInformationFromUrl(this.state.inputValue)
-        .then(function (response) {
-            console.log(response);
-        })
+        .then((response) => this.handleResponse(response))
         .catch(function (error) {
             console.log(error);
         });
@@ -66,12 +72,7 @@ class UploadForm extends Component {
                 // TODO update preview
                 let imageData = fileReader.result
                 this.faceRecog.GetFaceInformationFromImageData(imageData)
-                .then(function (response) {
-                    console.log(response);
-                    this.setState({
-                        faceRect : response.data.faceRectangle
-                    })
-                })
+                .then((response) => this.handleResponse(response))
                 .catch(function (error) {
                     console.log(error);
                 });
@@ -111,7 +112,7 @@ class UploadForm extends Component {
                         </div>
                     </div>
                 </div>
-                <Preview faceRect={this.state.faceRect} image={this.state.imageData} imageUrl={this.state.previewUrl}></Preview>
+                <Preview faceLandmarks={this.state.faceLandmarks} faceRect={this.state.faceRect} image={this.state.imageData}></Preview>
             </div>
         )
     }

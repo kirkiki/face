@@ -51,13 +51,18 @@ class FaceRecognitionApiService {
         return ret
     }
 
-    GetFaceInformationFromImageData(imageData, ids= true, landmarks=false, attributes = []) {
-        let to = this.formatAPIUrl(ids, landmarks, attributes)
+
+/*
+
+*/
+
+    GetFaceInformationFromImageData(imageData, ids= true, landmarks=true, attributes = this.supported_attributes) {
+        let to = this.formatAPIUrl(ids, landmarks, this.supported_attributes)
         return this._MakeRequest(to, imageData, "application/octet-stream")
     }
 
-    GetFaceInformationFromUrl(Url, ids= true, landmarks=false, attributes = []) {
-        let to = this.formatAPIUrl(ids, landmarks, attributes)
+    GetFaceInformationFromUrl(Url, ids= true, landmarks=true, attributes = this.supported_attributes) {
+        let to = this.formatAPIUrl(ids, landmarks, this.supported_attributes)
         return this._MakeRequest(to, {url : Url}, "application/json")
     }
 

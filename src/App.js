@@ -32,8 +32,10 @@ params: returnFaceLandmarks (bool)
     // TODO add url checks.
     //
     //
-    axios.post('/https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
-      url : this.state.inputValue,
+    axios.post('/https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect',
+      {
+        url : this.state.inputValue
+      },
       config : {
         headers : {
           "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
@@ -99,7 +101,7 @@ params: returnFaceLandmarks (bool)
           </div>
         </div>
         </header>
-        
+
         <footer>
           Powered By Kirkiki and Noki !
         </footer>

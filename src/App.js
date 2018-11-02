@@ -18,29 +18,25 @@ class App extends Component {
     });
   }
 
-  /*post https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect
-header: Ocp-Apim-Subscription-Key --> 59367a363a2947208054fa85fc318ce9
 
-pour une url: Content-type: application/json
-pour une image: application/octet-stream
-
-
-params: returnFaceLandmarks (bool)
-        returnFaceAttributes (age,gender,smile,facialHair,headPose,glasses,emotion,hair,makeup,accessories,blur,exposure,noise) */
+  formatAPIUrl() { 
+    // Get states values.
+    return 
+  }
 
   uploadUrlImage() {
     // TODO add url checks.
+    // https://media1.popsugar-assets.com/files/thumbor/Z2Pu7yrdRY56ug4-KYlLLoNK_3Y/fit-in/728xorig/filters:format_auto-!!-:strip_icc-!!-/2011/10/43/3/192/1922153/88ead859efe1888f_BTV_HowTo_DragonTat_2011_1023_thumbsquare/i/Halloween-Costume-Lisbeth-Salander-Girl-Dragon-Tattoo.png
     //
-    //
-    axios.post('/https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
-      url : this.state.inputValue,
-      config : {
+    axios.post('https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
+        url : this.state.inputValue,
+      }, 
+      {
         headers : {
           "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
           "Content-type" : "application/json"
         }
-      }
-    })
+      })
     .then(function (response) {
       console.log(response);
     })
@@ -51,23 +47,33 @@ params: returnFaceLandmarks (bool)
 
   uploadImage(evt) {
     // TODO parse event;
-    console.log(evt);
+    console.log(evt.target.files);
+    let fileList = evt.target.files;
+    let fileReader = new FileReader();
+    if (fileReader && fileList && fileList.length) {
+       fileReader.readAsArrayBuffer(fileList[0]);
+       fileReader.onload = function () {
+          let imageData = fileReader.result;
+          console.log(imageData)
+          axios.post('https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect',
+            imageData,
+            {
+              headers : {
+                "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
+                "Content-type" : "octet-stream"
+              }
+            }
+          )
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+       };
+    }
     /*
-    axios.post('/https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
-      url : evt.target.value.name,
-      config : {
-        headers : {
-          "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
-          "Content-type" : "application/json"
-        }
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });*/
+   */
   }
 
   render() {
@@ -90,7 +96,7 @@ params: returnFaceLandmarks (bool)
             <div>
               <label>Take a picture of your face</label>
               <div>
-                <input type="file" id="mypic" accept="image/*" capture="camera"/>
+                <input type="file" id="mypic" accept="image/*" capture="camera" onChange={evt => this.uploadImage(evt)}/>
               </div>
             </div>
           </div>

@@ -21,7 +21,7 @@ class App extends Component {
 
   formatAPIUrl() { 
     // Get states values.
-    return 
+    return 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect'
   }
 
   uploadUrlImage() {
@@ -29,7 +29,7 @@ class App extends Component {
     // https://media1.popsugar-assets.com/files/thumbor/Z2Pu7yrdRY56ug4-KYlLLoNK_3Y/fit-in/728xorig/filters:format_auto-!!-:strip_icc-!!-/2011/10/43/3/192/1922153/88ead859efe1888f_BTV_HowTo_DragonTat_2011_1023_thumbsquare/i/Halloween-Costume-Lisbeth-Salander-Girl-Dragon-Tattoo.png
     //
     //
-    axios.post('https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
+    axios.post(this.formatAPIUrl(), {
         url : this.state.inputValue,
       },
       {
@@ -54,15 +54,15 @@ class App extends Component {
     let fileReader = new FileReader();
     if (fileReader && fileList && fileList.length) {
        fileReader.readAsArrayBuffer(fileList[0]);
-       fileReader.onload = function () {
+       fileReader.onload = () => {
           let imageData = fileReader.result;
           console.log(imageData)
-          axios.post('https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect',
+          axios.post(this.formatAPIUrl(),
             imageData,
             {
               headers : {
                 "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
-                "Content-type" : "octet-stream"
+                "Content-type" : "application/octet-stream"
               }
             }
           )
@@ -98,7 +98,7 @@ class App extends Component {
             <div>
               <label>Take a picture of your face</label>
               <div>
-                <input type="file" id="mypic" accept="image/*" capture="camera" onChange={evt => this.uploadImage(evt)}/>
+                <input type="file" id="mypic" accept="image/*" capture="camera" onChange={evt => this.uploadImage(this, evt)}/>
               </div>
             </div>
           </div>

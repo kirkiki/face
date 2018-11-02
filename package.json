@@ -1,13 +1,16 @@
 {
-  "name": "react_front_lol",
+  "name": "face",
+  "homepage": "https://kirkiki.github.io/face/",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kirkiki/face.git"
+  },
   "private": true,
   "dependencies": {
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-scripts": "2.1.1",
-    "react-semantic-ui": "^0.2.0",
-    "semantic-ui-css": "^2.4.1"
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,5 +26,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
 }

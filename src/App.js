@@ -11,9 +11,14 @@ class App extends Component {
   }
 
   updateInputValue(evt) {
+    console.log("TEST")
     this.setState({
       inputValue: evt.target.value
     });
+  }
+
+  uploadImage() {
+    console.log(this.state.inputValue)
   }
 
   render() {
@@ -21,29 +26,29 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           An Awesome RGPD Compliant tool, we promise we don't keeps your personal data !
-          <content>
-          <form>
+          <div>
+          <div>
             <div>
               <label>Upload through Link</label>
               <div>
-                <input id="urlImput" value={this.state.inputValue} placeholder="http://your_link/to/an/image.ext" />
+                <input id="urlImput" value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} placeholder="http://your_link/to/an/image.ext" />
               </div>
               <div>
-                <button onClick={uploadImage()} >Submit</button>
+                <button type="button" onClick={evt => this.uploadImage()}>Submit</button>
               </div>
             </div>
             OR
             <div>
               <label>Take a picture of your face</label>
               <div>
-                <input type="file" id="mypic" accept="image/*;capture=camera" />
+                <input type="file" id="mypic" accept="image/*" capture="camera" />
               </div>
             </div>
-          </form>
+          </div>
           <div id="preview">
 
           </div>
-        </content>
+        </div>
         </header>
         
         <footer>

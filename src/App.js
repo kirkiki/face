@@ -28,15 +28,17 @@ class App extends Component {
     // TODO add url checks.
     // https://media1.popsugar-assets.com/files/thumbor/Z2Pu7yrdRY56ug4-KYlLLoNK_3Y/fit-in/728xorig/filters:format_auto-!!-:strip_icc-!!-/2011/10/43/3/192/1922153/88ead859efe1888f_BTV_HowTo_DragonTat_2011_1023_thumbsquare/i/Halloween-Costume-Lisbeth-Salander-Girl-Dragon-Tattoo.png
     //
+    //
     axios.post('https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect', {
         url : this.state.inputValue,
-      }, 
+      },
       {
-        headers : {
-          "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
-          "Content-type" : "application/json"
-        }
-      })
+          headers : {
+            "Ocp-Apim-Subscription-Key": "59367a363a2947208054fa85fc318ce9",
+            "Content-type" : "application/json"
+          }
+      }
+    )
     .then(function (response) {
       console.log(response);
     })
@@ -105,7 +107,7 @@ class App extends Component {
           </div>
         </div>
         </header>
-        
+
         <footer>
           Powered By Kirkiki and Noki !
         </footer>
